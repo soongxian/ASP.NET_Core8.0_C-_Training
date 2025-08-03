@@ -14,12 +14,28 @@ namespace NZWalks.API.Controllers
         {
             this.dbContext = nzWalksDbContext;
         }
+
+        // Get All Regions
         [HttpGet]
         public IActionResult GetAllRegion()
         {
             var regions = dbContext.Regions.ToList();
 
             return Ok(regions);
+        }
+
+        // Get Region By Id
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public IActionResult GetRegionById([FromRoute] Guid id)
+        {
+            var regionSelected = dbContext.Regions.FirstOrDefault(x => x.Id == id);
+
+            if (regionSelected == null)
+            {
+                return NotFound();
+            }
+            return Ok(regionSelected);
         }
     }
 }
