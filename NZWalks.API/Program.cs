@@ -1,5 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using NZWalks.API.Data;
 
 namespace NZWalks.API
 {
@@ -18,6 +20,8 @@ namespace NZWalks.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
+
+            builder.Services.AddDbContext<NZWalksDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 
             var app = builder.Build();
 
