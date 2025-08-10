@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.CustomActionFilter;
 using NZWalks.API.Data;
@@ -10,6 +11,7 @@ namespace NZWalks.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RegionsController : ControllerBase
     {
 
@@ -26,6 +28,7 @@ namespace NZWalks.API.Controllers
 
         // Get All Regions
         [HttpGet]
+        [Authorize(Roles = "Reader, Writer")]
         public async Task<IActionResult> GetAllRegion()
         {
             var regionsDomain = await regionRepository.GetAllRegionAsync();
@@ -50,6 +53,7 @@ namespace NZWalks.API.Controllers
         // Get Region By Id
         [HttpGet]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Reader, Writer")]
         public async Task<IActionResult> GetRegionById([FromRoute] Guid id)
         {
             var regionDomain = await regionRepository.GetRegionByIdAsync(id);
@@ -75,6 +79,7 @@ namespace NZWalks.API.Controllers
         // Create a new region
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> CreateRegion([FromBody] AddRegionRequestDto addRegionRequestDto)
         {
             //var regionDomainModel = new Region
@@ -106,6 +111,7 @@ namespace NZWalks.API.Controllers
         [HttpPut]
         [Route("{id:Guid}")]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
             //var regionDomainModel = new Region
@@ -147,6 +153,7 @@ namespace NZWalks.API.Controllers
         // Delete region
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> DeleteRegion([FromRoute] Guid id)
         {
             var regionDomainModel = await regionRepository.DeleteRegionAsync(id);
