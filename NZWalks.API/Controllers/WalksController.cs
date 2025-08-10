@@ -1,0 +1,43 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using NZWalks.API.Models.Domain;
+using NZWalks.API.Models.DTO;
+using NZWalks.API.Repositories;
+
+namespace NZWalks.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class WalksController : ControllerBase
+    {
+        private readonly IMapper mapper;
+        public IWalkRepository walkRepository { get; }
+
+
+        public WalksController(IMapper mapper, IWalkRepository walkRepository)
+        {
+            this.mapper = mapper;
+            this.walkRepository = walkRepository;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateWalkAsync([FromBody] AddWalkRequestDto addWalkRequestDto)
+        {
+            var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
+            await walkRepository.CreateWalkAsync(walkDomainModel);
+
+            var walkDto = mapper.Map<WalkDto>(walkDomainModel);
+            return Ok(walkDto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllWalksAsync()
+        {
+            var walksDomainModel = await walkRepository.GetAllWalksAsync();
+
+            var walkDto = mapper.Map<List<WalkDto>>(walksDomainModel);
+
+            return Ok(walkDto);
+        }
+    }
+}

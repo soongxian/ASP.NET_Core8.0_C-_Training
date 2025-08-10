@@ -26,6 +26,8 @@ namespace NZWalks.API
             builder.Services.AddDbContext<NZWalksDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 
             builder.Services.AddScoped<IRegionRepository, RegionRepository>();
+            builder.Services.AddScoped<IWalkRepository, WalkRepository>();
+
             builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
             var app = builder.Build();
