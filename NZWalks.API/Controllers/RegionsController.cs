@@ -92,6 +92,11 @@ namespace NZWalks.API.Controllers
             //    RegionImageUrl = regionDomainModel.RegionImageUrl
             //};
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var regionDomainModel = mapper.Map<Region>(addRegionRequestDto);
             regionDomainModel = await regionRepository.CreateRegionAsync(regionDomainModel);
 
@@ -126,6 +131,11 @@ namespace NZWalks.API.Controllers
             //    Name = regionDomainModel.Name,
             //    RegionImageUrl = regionDomainModel.RegionImageUrl
             //};
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var regionDomainModel = mapper.Map<Region>(updateRegionRequestDto);
 
