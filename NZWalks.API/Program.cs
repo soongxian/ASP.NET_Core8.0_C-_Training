@@ -21,7 +21,7 @@ namespace NZWalks.API
 
             // Add services to the container.
 
-            var logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Information().CreateLogger();
+            var logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("Logs/NZWalks_Log.txt", rollingInterval: RollingInterval.Minute).MinimumLevel.Information().CreateLogger();
 
             builder.Logging.ClearProviders();
             builder.Logging.AddSerilog(logger);
